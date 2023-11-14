@@ -69,7 +69,7 @@ const EditarCliente = () =>{
                 setNome(response.data.data.nome);
                 setEmail(response.data.data.email);
                 setCpf(response.data.data.cpf);
-                setId(response.data.data.id);
+                
             }catch(error){
                 console.log("erro ao buscar dados da api");
 
@@ -81,16 +81,49 @@ const EditarCliente = () =>{
     
     
     const handleState = (e: ChangeEvent<HTMLInputElement>)=>{
+
         if(e.target.name === "nome"){
             setNome(e.target.value);
+        }
+        if(e.target.name === "celular"){
+            setCelular(e.target.value);
+        }
+        if(e.target.name=== "email"){
+            setEmail(e.target.value);
         }
         if(e.target.name === "cpf"){
             setCpf(e.target.value);
         }
-        if(e.target.name === "email"){
-            setEmail(e.target.value);
+        if(e.target.name === "dataNascimento"){
+            setDataNascimento(e.target.value);
         }
-      
+        if(e.target.name === "cidade"){
+            setCidade(e.target.value);
+        }
+        if(e.target.name === "estado"){
+            setEstado(e.target.value);
+        }
+        if(e.target.name === "pais"){
+            setPais(e.target.value);
+        }
+        if(e.target.name === "rua"){
+            setRua(e.target.value);
+        }
+        if(e.target.name === "numero"){
+            setNumero(e.target.value);
+        }
+        if(e.target.name === "bairro"){
+            setBairro(e.target.value);
+        }
+        if(e.target.name === "cep"){
+            setCep(e.target.value);
+        }
+        if(e.target.name === "complemento"){
+            setComplemento(e.target.value);
+        }
+        if(e.target.name === "senha"){
+            setSenha(e.target.value);
+        }
     }
     return (
         <div>

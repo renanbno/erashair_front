@@ -6,7 +6,7 @@ Projeto front do cabeleleiro ERAS
 
 1. Clone este repositório para o seu ambiente de desenvolvimento local utilizando o comando:
 ```
- git clone https://github.com/MIMIMINISAIA/erashair_front.git
+ git clone https://github.com/renanbno/erashair_front.git
 ```
 2. Acesse o diretório do projeto:
 ```
@@ -27,7 +27,7 @@ npm start
 
 6. abrir o projeto do ERAS
 ```
- git clone https://github.com/MIMIMINISAIA/ERAShair.git
+ git clone https://github.com/renanbno/ERAShair.git
 ```
 
 7. executar os comandos que esta no readme do ERAS
