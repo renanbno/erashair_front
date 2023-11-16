@@ -25,7 +25,7 @@ const CadastroServico = () => {
             
         }
 
-        axios.post('http://127.0.0.1:8000/api/store', dados,
+        axios.post('http://127.0.0.1:8000/api/servico/store', dados,
         {
             headers:{
                 "Accept": "application/json",
@@ -39,7 +39,7 @@ const CadastroServico = () => {
                 alert("erro ao cadastrar, olhar o console")
             }
             else{
-                window.location.href = "/listagemCliente";
+                window.location.href = "/listagemServico";
             }
             
         }).catch(function(error){

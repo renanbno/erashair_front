@@ -42,7 +42,7 @@ const ListagemServico = () => {
     useEffect(() =>{
         async function fetchData(){
             try{
-                const response = await axios.get('http://127.0.0.1:8000/api/servico/retornarTodos/');
+                const response = await axios.get('http://127.0.0.1:8000/api/servico/retornarTodos');
                 setServicos(response.data.data);
                 
 

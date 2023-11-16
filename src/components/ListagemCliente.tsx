@@ -2,6 +2,7 @@ import React, {Component, useState, ChangeEvent, FormEvent, useEffect}from 'reac
 import styles from "../App.module.css"
 import { CadastroClienteInterfaces } from '../interfaces/CadastroClienteInterfaces';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const ListagemCliente = () => {
 
@@ -20,7 +21,7 @@ const ListagemCliente = () => {
 
         async function fetchData(){
             try{
-                const response = await axios.post('http://127.0.0.1:8000/api/nome',
+                const response = await axios.post('http://127.0.0.1:8000/api/procurarN',
                 {nome:pesquisa},
                 {
                     headers:{
@@ -28,7 +29,14 @@ const ListagemCliente = () => {
                         "content-Type":"aplication/json"
                     }
                 }).then(function(response){
-                    setClientes(response.data.data);
+                    console.log(response);
+                    if(response.data.status == true){
+                        setClientes(response.data.data);
+                    }
+                    else{
+                        setClientes([]);
+                    }
+                    
                 }).catch(function(error){
                     console.log(error);
                 });
@@ -126,7 +134,8 @@ const ListagemCliente = () => {
                                         {/* <td>{clientes.complemento}</td> */}
                                         {/* <td>{clientes.senha}</td> */}
                                         <td>
-                                            <a href="#" className='btn btn-primary btn-sm'>Editar</a>
+                                            
+                                            <Link to={"/editarCliente/"+ clientes.id}  className='btn btn-primary btn-sm'>Editar</Link>
                                             <a href="#" className='btn btn-danger btn-sm'>Excluir</a>
                                         </td>
                                     </tr>
