@@ -61,6 +61,7 @@ const CadastroCliente = () => {
                 alert("erro ao cadastrar, olhar o console")
             }
             else{
+                console.log(response)
                 window.location.href = "/listagemCliente";
             }
             

@@ -1,10 +1,10 @@
 import React, {Component, useState, ChangeEvent, FormEvent, useEffect}from 'react';
-import Header from './HeaderProfissional';
-import Footer from './FooterProfissional';
+import Header from './HeaderCliente';
+import Footer from './FooterCliente';
 import styles from '../App.module.css'
 import axios from 'axios';
 
-const CadastroProfissional = () => {
+const CadastroCliente = () => {
 
     const [nome, setNome] = useState<string>("");
     const [celular, setCelular] = useState<string>("");
@@ -20,13 +20,12 @@ const CadastroProfissional = () => {
     const [cep, setCep] = useState<string>("");
     const [complemento, setComplemento] = useState<string>("");
     const [senha, setSenha] = useState<string>("");
-    const [salario, setSalario] = useState<string>("");
 
  
 
    
 
-    const CadastroProfissional = (e: FormEvent) => {
+    const CadastroCliente = (e: FormEvent) => {
 
         e.preventDefault();
 
@@ -45,11 +44,10 @@ const CadastroProfissional = () => {
             cep: cep,
             complemento: complemento,
             senha: senha,
-            salario: salario,
             
         }
 
-        axios.post('http://127.0.0.1:8000/api/cadastroProfissional', dados,
+        axios.post('http://127.0.0.1:8000/api/cadastro', dados,
         {
             headers:{
                 "Accept": "application/json",
@@ -63,7 +61,7 @@ const CadastroProfissional = () => {
                 alert("erro ao cadastrar, olhar o console")
             }
             else{
-                window.location.href = "/listagemProfissional";
+                window.location.href = "/listagemCliente";
             }
             
         }).catch(function(error){
@@ -114,9 +112,6 @@ const CadastroProfissional = () => {
         if(e.target.name === "senha"){
             setSenha(e.target.value);
         }
-        if(e.target.name === "salario"){
-            setSalario(e.target.value);
-        }
        
        
     }
@@ -131,8 +126,8 @@ const CadastroProfissional = () => {
             <div className='container'>
                 <div className='card'>
                     <div className='card-body'>
-                        <h5 className='card-title'>Cadastrar Profissional</h5>
-                        <form onSubmit={CadastroProfissional} className='row g-3'>
+                        <h5 className='card-title'>Cadastrar Cliente</h5>
+                        <form onSubmit={CadastroCliente} className='row g-3'>
                             
                             <div className='col-6'>
                                 <label htmlFor="nome" className='form-label'>Nome</label>
@@ -201,13 +196,9 @@ const CadastroProfissional = () => {
                             </div>
 
                             <div className='col-6'>
-                                <label htmlFor="senha" className='form-label'>Senha</label>
-                                <input type="password" name='senha' className='form-control' required onChange={handleState}/>
-                            </div>
-                            <div className='col-6'>
-                                <label htmlFor="salario" className='form-label'>Salario</label>
-                                <input type="text" name='salario' id='inputPassword5' className='form-control' aria-describedby="passwordHelpBlock" required onChange={handleState}/>
-                            </div>
+                                <label htmlFor="inputPassword5" className='form-label'>Senha</label>
+                                <input type="password" name='senha' id='inputPassword5' className='form-control' aria-describedby="passwordHelpBlock" required onChange={handleState}/>
+                            </div >
 
                             
                              <div className='col-12'>
@@ -231,4 +222,9 @@ const CadastroProfissional = () => {
     );
 }
 
-export default CadastroProfissional;
+
+
+
+
+export default CadastroCliente;
+    
