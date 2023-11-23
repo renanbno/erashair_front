@@ -61,7 +61,7 @@ const EditarClientes = () =>{
                 alert("erro ao cadastrar, olhar o console")
             }
             else{
-             window.location.href = "/listagemCliente";
+                window.location.href = "/listagemCliente";
             }
             
         }).catch(function(error){
@@ -76,7 +76,7 @@ const EditarClientes = () =>{
     useEffect(()=>{
         async function fetchData(){
             try{
-                const response = await axios.get("http://127.0.0.1:8000/api/findCliente/" + parametro.id)
+                const response = await axios.get("http://127.0.0.1:8000/api/ClienteProcurar/" + parametro.id)
                 console.log(response)
                 setId(response.data.data.id);
                 setNome(response.data.data.nome);

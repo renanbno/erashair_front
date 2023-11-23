@@ -61,7 +61,7 @@ const CadastroCliente = () => {
                 alert("erro ao cadastrar, olhar o console")
             }
             else{
-                console.log(response)
+                console.log(    )
                 window.location.href = "/listagemCliente";
             }
             
@@ -116,6 +116,30 @@ const CadastroCliente = () => {
        
        
     }
+
+    const findCep = (e: FormEvent) => {
+        e.preventDefault();
+        console.log(cep)
+        fetch('https://viacep.com.br/ws/'+cep+'/json/',
+        {
+            method: 'GET'
+        }).then(response => response.json())
+        .then(
+            data => {
+                setCidade(data.localidade);
+                //setCep(data.cep);
+                setRua(data.logradouro);
+                setBairro(data.bairro);
+
+
+                setEstado(data.uf);       
+            }
+        ).catch(function(error){
+            console.log(error);
+        });
+
+    }
+        
     
       
 
@@ -157,6 +181,11 @@ const CadastroCliente = () => {
                             </div>
 
                             <div className='col-6'>
+                                <label htmlFor="cep" className='form-label'>CEP</label>
+                                <input type="text" name='cep' className='form-control' required onChange={handleState} onBlur={findCep}/>
+                            </div>
+
+                            <div className='col-6'>
                                 <label htmlFor="cidade" className='form-label'>Cidade</label>
                                 <input type="text" name='cidade' className='form-control' required onChange={handleState}/>
                             </div>
@@ -186,10 +215,7 @@ const CadastroCliente = () => {
                                 <input type="text" name='bairro' className='form-control' required onChange={handleState}/>
                             </div>
 
-                            <div className='col-6'>
-                                <label htmlFor="cep" className='form-label'>CEP</label>
-                                <input type="text" name='cep' className='form-control' required onChange={handleState}/>
-                            </div>
+                           
 
                             <div className='col-6'>
                                 <label htmlFor="complemento" className='form-label'>Complemento</label>

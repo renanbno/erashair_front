@@ -1,13 +1,18 @@
 import React, { Component, useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import styles from "../App.module.css"
-import { CadastroServicoInterfaces } from '../interfaces/CadastroServicoInterfaces';
+import { AgendaInterfaces } from '../interfaces/AgendaInterfaces';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { CadastroProfissionalInterfaces } from '../interfaces/CadastroProfissionalInterfaces';
 
-const ListagemServico = () => {
+const ListagemAgenda = () => {
 
-    const [servicos, setServicos] = useState<CadastroServicoInterfaces[]>([]);
+    const [agendas, setAgendas] = useState<AgendaInterfaces[]>([]);
+    const [profissionais, setProfissionais] = useState<CadastroProfissionalInterfaces[]>([]);
+
     const [pesquisa, setPesquisa] = useState<string>('');
+    const [profissional, setProfissional] = useState<string>('');
+
     const [error, setError] = useState("");
 
     const hadleState = (e: ChangeEvent<HTMLInputElement>) => {
@@ -16,20 +21,39 @@ const ListagemServico = () => {
         }
     }
 
+    const hadleStateSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+        //console.log(e.target)
+        //if (e.target.name === "selectProfissional") {
+            setProfissional(e.target.value);
+        //}
+    }
+
     const buscar = (e: FormEvent) => {
         e.preventDefault();
 
         async function fetchData() {
             try {
-                const response = await axios.post('http://127.0.0.1:8000/api/nome',
-                    { nome: pesquisa },
+                console.log(profissional)
+                console.log(pesquisa)
+                const response = await axios.post('http://127.0.0.1:8000/api/procurarAgenda',
+                    {
+                        profissional_id: profissional,
+                        data_hora: pesquisa
+                    },
                     {
                         headers: {
                             "Accept": "application/json",
                             "content-Type": "aplication/json"
                         }
                     }).then(function (response) {
-                        setServicos(response.data.data);
+                        console.log(response);
+                        if (response.data.status == true) {
+                            setAgendas(response.data.data);
+                        }
+                        else {
+                            setAgendas([]);
+                        }
+
                     }).catch(function (error) {
                         console.log(error);
                     });
@@ -44,11 +68,11 @@ const ListagemServico = () => {
     const excluir = (id: number)=>{
         async function fetchData(){
             try{
-                const response = await axios.delete('http://127.0.0.1:8000/api/delete/'+ id);
+                const response = await axios.delete('http://127.0.0.1:8000/api/excluirAgenda/'+ id);
                 if(response.data.status === true){
 
-                    const response = await axios.get('http://127.0.0.1:8000/api/servico/retornarTodos/');
-                    setServicos(response.data.data);
+                    const response = await axios.get('http://127.0.0.1:8000/api/retornarTodosAgenda/');
+                    setAgendas(response.data.data);
                    
                 }
                 else{
@@ -62,11 +86,12 @@ const ListagemServico = () => {
         }
         fetchData();
     }
+
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/servico/retornarTodos');
-                setServicos(response.data.data);
+                const response = await axios.get('http://127.0.0.1:8000/api/profissional/retornarTodos');
+                setProfissionais(response.data.data);
 
 
             } catch (error) {
@@ -79,6 +104,25 @@ const ListagemServico = () => {
 
         fetchData();
     }, []);
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/retornarTodosAgenda/');
+                setAgendas(response.data.data);
+
+
+            } catch (error) {
+                setError("Ocorreu um erro");
+                console.log(error);
+
+            }
+
+        }
+
+        fetchData();
+    }, []);
+
     return (
         <div>
             <main className={styles.main}>
@@ -89,7 +133,17 @@ const ListagemServico = () => {
                             <div className='card-body'>
                                 <h5 className='card-title'>Pesquisar</h5>
                                 <form onSubmit={buscar} className='row'>
-                                    <div className='col-10'>
+                                    <div className='col-5'>
+                                        <select name="selectProfissional" value={profissional} onChange={hadleStateSelect} >
+                                            <option selected value="0">Selecione um Profissional</option>
+                                            {profissionais.map(profissional => (
+                                                <option value={profissional.id}>{profissional.nome}</option>
+                                            ))}
+
+                                        </select>
+
+                                    </div>
+                                    <div className='col-5'>
                                         <input type="text" name='pesquisa' className='form-control' onChange={hadleState} />
                                     </div>
 
@@ -105,31 +159,27 @@ const ListagemServico = () => {
                     <div className='card'>
                         <div className='card-body'>
                             <h5 className='card-title'>
-                                Listagem de Serviços
+                                Listagem Agenda
                             </h5>
-                            <table className='table table-hover table-bordered border-dark border border-success p-2 mb-2 border-opacity-25'>
+                            <table className='table table-hover table-bordered border-dark border border-success p-2 mb-2 border-opacity-25 '>
                                 <thead>
                                     <tr>
                                         {/* <th>ID</th> */}
-                                        <th>Nome</th>
-                                        <th>Descrição</th>
-                                        <th>Duração</th>
-                                        <th>Preço</th>
+                                        <th>profisional_id</th>
+                                        <th>data_hora</th>
                                         <th>Ações</th>
+
                                     </tr>
+
+
                                 </thead>
                                 <tbody>
-                                    {servicos.map(servicos => (
-                                        <tr key={servicos.id}>
-                                            {/* <td>{servicos.id}</td> */}
-                                            <td>{servicos.nome}</td>
-                                            <td>{servicos.descricao}</td>
-                                            <td>{servicos.duracao}</td>
-                                            <td>{servicos.preco}</td>
-                                            
+                                    {agendas.map(agendas => (
+                                        <tr key={agendas.id}>
+                                            <td>{agendas.profissional_id}</td>
+                                            <td>{agendas.data_hora}</td>
                                             <td>
-                                                <Link to={"/editarServico/" + servicos.id} className='btn btn-primary btn-sm'>Editar</Link>
-                                                <button onClick={()=> excluir(servicos.id)} className='btn m-1 btn-danger btn-sm'>Excluir</button>
+                                            <button onClick={()=> excluir(agendas.id)} className='btn btn-danger btn-sm'>Excluir</button>
                                             </td>
                                         </tr>
                                     ))}
@@ -145,4 +195,4 @@ const ListagemServico = () => {
     );
 }
 
-export default ListagemServico;
+export default ListagemAgenda;
